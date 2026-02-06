@@ -1,4 +1,15 @@
 # __init__.py
+
+bl_info = {
+    "name": "UPMODS Sofa",
+    "author": "Kshitij",
+    "version": (1, 0, 0),
+    "blender": (4, 0, 0),
+    "location": "View3D > Sidebar > UPMODS",
+    "description": "UPMODS MySQL-based sofa configurator",
+    "category": "3D View",
+}
+
 import bpy
 
 from .panel import (
@@ -24,7 +35,6 @@ def register():
     for cls in classes:
         bpy.utils.register_class(cls)
 
-    # ✅ Scene properties (PUT IT HERE)
     bpy.types.Scene.selected_headboard_id = bpy.props.IntProperty(
         name="Selected Headboard ID",
         default=-1
@@ -37,7 +47,6 @@ def register():
 
 
 def unregister():
-    # ✅ Always clean up properties
     del bpy.types.Scene.selected_headboard_id
     del bpy.types.Scene.selected_cot_id
 
