@@ -1,23 +1,24 @@
 # operators.py
-
 import bpy
-from .db import fetch_items
 
-class MYSQL_OT_load_items(bpy.types.Operator):
-    bl_idname = "mysql.load_items"
-    bl_label = "Load Items from MySQL"
+
+class UPMODS_OT_select_headboard(bpy.types.Operator):
+    bl_idname = "upmods.select_headboard"
+    bl_label = "Select Headboard"
+
+    item_id: bpy.props.IntProperty()
 
     def execute(self, context):
-        scene = context.scene
-        scene.mysql_items.clear()
+        context.scene.selected_headboard_id = self.item_id
+        return {'FINISHED'}
 
-        for item in fetch_items():
-            new = scene.mysql_items.add()
-            new.id = item.id
-            new.name = item.name
-            new.type = item.type
-            new.price = item.price
-            new.location = item.location
 
-        self.report({'INFO'}, "Items loaded from MySQL")
+class UPMODS_OT_select_cot(bpy.types.Operator):
+    bl_idname = "upmods.select_cot"
+    bl_label = "Select Cot"
+
+    item_id: bpy.props.IntProperty()
+
+    def execute(self, context):
+        context.scene.selected_cot_id = self.item_id
         return {'FINISHED'}

@@ -1,9 +1,16 @@
 # db.py
-
 import mysql.connector
 from .item import Item
 
-def fetch_items():
+_ITEMS_CACHE = None
+
+
+def fetch_items(force=False):
+    global _ITEMS_CACHE
+
+    if _ITEMS_CACHE is not None and not force:
+        return _ITEMS_CACHE
+
     conn = mysql.connector.connect(
         host="localhost",
         user="root",
@@ -28,4 +35,6 @@ def fetch_items():
 
     cursor.close()
     conn.close()
+
+    _ITEMS_CACHE = items
     return items

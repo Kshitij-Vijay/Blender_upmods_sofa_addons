@@ -1,33 +1,45 @@
 # __init__.py
-
-bl_info = {
-    "name": "Upmods Sofa",
-    "author": "You",
-    "version": (1, 0),
-    "blender": (4, 5, 0),
-    "location": "View3D > Sidebar > MySQL",
-    "description": "MySQL Items Viewer",
-    "category": "3D View"
-}
-
-
 import bpy
-from .properties import BlenderItem
-from .operators import MYSQL_OT_load_items
-from .panel import MYSQL_PT_items_panel
+
+from .panel import (
+    UPMODS_PT_headboards,
+    UPMODS_PT_cots,
+    UPMODS_PT_price,
+)
+from .operators import (
+    UPMODS_OT_select_headboard,
+    UPMODS_OT_select_cot,
+)
 
 classes = (
-    BlenderItem,
-    MYSQL_OT_load_items,
-    MYSQL_PT_items_panel
+    UPMODS_PT_headboards,
+    UPMODS_PT_cots,
+    UPMODS_PT_price,
+    UPMODS_OT_select_headboard,
+    UPMODS_OT_select_cot,
 )
+
 
 def register():
     for cls in classes:
         bpy.utils.register_class(cls)
-    bpy.types.Scene.mysql_items = bpy.props.CollectionProperty(type=BlenderItem)
+
+    # ✅ Scene properties (PUT IT HERE)
+    bpy.types.Scene.selected_headboard_id = bpy.props.IntProperty(
+        name="Selected Headboard ID",
+        default=-1
+    )
+
+    bpy.types.Scene.selected_cot_id = bpy.props.IntProperty(
+        name="Selected Cot ID",
+        default=-1
+    )
+
 
 def unregister():
+    # ✅ Always clean up properties
+    del bpy.types.Scene.selected_headboard_id
+    del bpy.types.Scene.selected_cot_id
+
     for cls in reversed(classes):
         bpy.utils.unregister_class(cls)
-    del bpy.types.Scene.mysql_items
