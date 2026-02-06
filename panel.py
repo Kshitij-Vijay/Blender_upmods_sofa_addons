@@ -1,6 +1,7 @@
 # panel.py
 import bpy
 from .db import fetch_items
+from .threed import insert_headboard
 
 
 def get_item_by_id(items, item_id):
@@ -35,8 +36,15 @@ class UPMODS_PT_headboards(bpy.types.Panel):
             row.label(text=item.name)
             row.label(text=f"₹ {item.price}")
 
-            op = box.operator("upmods.select_headboard", text="Select")
+            op = box.operator(
+                "upmods.select_headboard",
+                text="Select"
+            )
             op.item_id = item.id
+
+            # ✅ PASS THE PATH HERE
+            op.headboard_path = item.location
+
 
 
 # ---------------- COTS ----------------
@@ -95,7 +103,7 @@ class UPMODS_PT_price(bpy.types.Panel):
         if cot:
             layout.separator()
             layout.label(text=f"Cot: {cot.name}")
-            layout.label(text=f"₹ {cot.price}")
+            layout.label(text=f"₹ {cot.price}")            
             total += cot.price
 
         layout.separator()
